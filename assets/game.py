@@ -3,8 +3,13 @@ import time
 
 FPS = 10
 
+SCALE = 20
+X_UNITS = 30
+Y_UNITS = 30
+
+
 screen = Screen()
-screen.setup(width=600, height=600)
+screen.setup(width=(X_UNITS+2)*SCALE, height=(Y_UNITS+2)*SCALE)
 screen.bgcolor("black")
 screen.title("snakeee")
 screen.tracer(0)
