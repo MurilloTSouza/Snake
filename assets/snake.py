@@ -33,6 +33,7 @@ class Snake:
     _color = "white"
 
     _collision_listeners = []
+    _self_collision_listeners = []
 
     def __init__(self, size):
         for _ in range(size):
@@ -60,10 +61,16 @@ class Snake:
             if self.is_collided_with(listener["pixel"]):
                 listener["callback"]()
 
+    def _trigger_self_collisions(self):
+        for i, listener in enumerate(self._self_collision_listeners):
+            if self.is_head_collided_with_self():
+                listener()
+
     def forward(self):
         self._add_head()
         self._remove_tail()
         self._trigger_collisions()
+        self._trigger_self_collisions()
 
     def turn_left(self):
         self._direction = direction.counter_clockwise(self._direction)
@@ -90,3 +97,14 @@ class Snake:
             "callback": callback
         }
         self._collision_listeners.append(listener)
+
+    def is_head_collided_with_self(self):
+        head = self._segments[0]
+        segments = self._segments[1:]
+        for i, segment in enumerate(segments):
+            if segment.is_collided_with(head):
+                return True
+        return False
+
+    def on_collision_with_self(self, callback):
+        self._self_collision_listeners.append(callback)

@@ -15,11 +15,22 @@ def eat_food():
 snake.on_collision_with(food, eat_food)
 
 
+is_game_on = True
+
+
+def game_over():
+    global is_game_on
+    is_game_on = False
+
+
+snake.on_collision_with_self(game_over)
+
+
 def on_update():
     game.on_key("Left", snake.turn_left)
     game.on_key("Right", snake.turn_right)
     snake.forward()
-    return True
+    return is_game_on
 
 
 game.run(on_update)
